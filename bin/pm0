@@ -1,0 +1,39 @@
+#!/usr/bin/env node
+
+'use strict'
+
+const fs = require('fs')
+const path = require('path')
+
+const chalk = require('chalk')
+const commander = require('commander')
+
+const cli = require('../lib/cli')
+const me = require('../package.json')
+
+commander.version(me.version)
+  .usage('<command>')
+
+commander.command('play [file]')
+  .option('-f, --fork', 'fork daemon process')
+  .description('start application')
+  .action(function (file, options) {
+    cli.play(file, !!options.fork)
+  })
+
+commander.command('stop')
+  .description('stop application')
+  .action(function () {
+    console.log('stop')
+  })
+
+commander.command('list')
+  .description('show processes list')
+  .action(function () {
+    console.log('list')
+  })
+
+commander.parse(process.argv)
+if (process.argv.length === 2) {
+  commander.outputHelp()
+}
